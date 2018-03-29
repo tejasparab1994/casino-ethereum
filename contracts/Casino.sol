@@ -2,14 +2,14 @@
 deploying vulnerable code that could make
 someone lose real money. */
 
-pragma solidity 0.4.20;
+pragma solidity ^0.4.11;
 
 contract Casino {
   address public owner;
-  uint256 public minimumBet;
+  uint256 public minimumBet = 100 finney;
   uint256 public totalBet;
   uint256 public numberOfBets;
-  uint256 public maxAmountOfBets = 100;
+  uint256 public maxAmountOfBets = 10;
   address[] public players;
 
   struct Player {
@@ -36,8 +36,7 @@ contract Casino {
 
 // constant specifies that it is reading a value that already exists from
 // the blockchain
-  function checkPlayerExists(address player) public constant
-  returns(bool) {
+  function checkPlayerExists(address player)public returns(bool) {
     for (uint256 i = 0; i < players.length; i++){
       if(players[i] == player) return true;
     }
@@ -75,7 +74,7 @@ contract Casino {
     //temp array
     address[100] memory winners;
     uint256 count = 0;
-    for(uint 256 i = 0; i < players.length; i++){
+    for(uint256 i = 0; i < players.length; i++){
       address playerAddress = players[i];
       if (playerInfo[playerAddress].numberSelected == numberWinner){
         winners[count] = playerAddress;
@@ -94,6 +93,7 @@ contract Casino {
       if(winners[j] != address(0))
       winners[j].transfer(winnerEtherAmount);
     }
-
+    totalBet = 0;
+    numberOfBets = 0;
   }
 }
